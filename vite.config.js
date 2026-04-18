@@ -3,16 +3,29 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
+  server: {
+    middlewareMode: false
+  },
   build: {
-    target: 'ES2020',
+    outDir: 'dist',
+    sourcemap: false,
     minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false
+      }
+    },
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks: undefined,
+        entryFileNames: 'js/[name].js',
+        chunkFileNames: 'js/[name].js',
+        assetFileNames: '[ext]/[name].[ext]'
       }
     }
   },
-  define: {
-    global: 'globalThis'
+  preview: {
+    port: 4173,
+    strictPort: true
   }
 })
